@@ -1,5 +1,9 @@
-# Prerequisites
-*.d
+.build/
+_hot_reload_test/
+raylib/src
+backup_windows/
+
+*.rdi
 
 # Object files
 *.o
