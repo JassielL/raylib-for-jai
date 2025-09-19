@@ -1,3 +1,5 @@
+#module_parameters()(LINK_KIND: enum { STATIC; DYNAMIC; } = .DYNAMIC);
+
 // Rectangle, 4 components
 Rectangle :: struct {
 	x:      float; // Rectangle top-left corner position x
@@ -49,12 +51,20 @@ Matrix :: Matrix4;
 
 #scope_export;
 
-#if OS == .WINDOWS {
-	#load "windows.jai";
+#load "raylib.jai";
 
+#if OS == .WINDOWS {
 	#library,system,link_always "user32";
 	#library,system,link_always "opengl32";
 	#library,system,link_always "gdi32";
 	#library,system,link_always "winmm";
 	#library,system,link_always "shell32";
+
+	raylib_static :: #library,no_dll "windows/raylib";
+	raylib_dll    :: #library        "windows/raylib_dll";
+
+	#if LINK_KIND == {
+		case .STATIC;  raylib :: raylib_static;
+		case .DYNAMIC; raylib :: raylib_dll;
+	}
 }
